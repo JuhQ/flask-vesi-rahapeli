@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peli</title>
+    <script src="peli.js" defer></script>
+  </head>
+  <body>
+    <form id="new-game">
+      <h2>Uusi peli</h2>
+      <label
+        >Pelaajan nimi:
+        <input type="text" name="player-name" placeholder="Pelaajan nimi" />
+      </label>
+      <button type="submit">Aloita</button>
+    </form>
+    <form id="load-game">
+      <h2>Palaa vanhaan peliin</h2>
+      <label
+        >Pelaajan nimi:
+        <input type="text" name="player-name" placeholder="Pelaajan nimi" />
+      </label>
+      <button type="submit">Aloita</button>
+    </form>
+
+    <div id="money">Money: 0</div>
+    <div id="water">Water: 0</div>
+
+    <button type="button" id="add-money">Add money</button>
+    <button type="button" id="add-water">Add water</button>
+  </body>
+</html>

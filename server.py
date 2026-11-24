@@ -1,0 +1,71 @@
+from flask import send_from_directory, request, Flask, json, Response
+
+# pelitila populoidaan tähän pelin käynnistymisen jälkeen
+# TODO: pelitila vain muistissa, ehkä olisi hyvä tallentaa levylle
+game_state = {}
+
+app = Flask(__name__)
+
+@app.route("/new-game/<player>")
+def new_game(player):
+    player_game_state = {
+        "money": 0,
+        "water": 0
+    }
+    game_state[player] = player_game_state
+
+    return player_game_state
+
+@app.route("/get-game/<player>")
+def get_game(player):
+    if player not in game_state:
+        response = {
+            "message": "Player not found",
+            "status": 400
+        }
+        json_response = json.dumps(response)
+        http_response = Response(response=json_response, status=response["status"], mimetype="application/json")
+        return http_response
+
+    return game_state[player]
+
+@app.route("/add-water/<player>")
+def add_water(player):
+    if player not in game_state:
+        response = {
+            "message": "Player not found",
+            "status": 400
+        }
+        json_response = json.dumps(response)
+        http_response = Response(response=json_response, status=response["status"], mimetype="application/json")
+        return http_response
+
+    game_state[player]["water"] += 10
+
+    return game_state[player]
+
+@app.route("/add-money/<player>")
+def add_money(player):
+    if player not in game_state:
+        response = {
+            "message": "Player not found",
+            "status": 400
+        }
+        json_response = json.dumps(response)
+        http_response = Response(response=json_response, status=response["status"], mimetype="application/json")
+        return http_response
+
+    game_state[player]["money"] += 10
+
+    return game_state[player]
+
+@app.route("/images/<path:filename>")
+def serve_image(filename):
+    return send_from_directory("images", filename)
+
+@app.route("/<path:filename>")
+def serve_asset(filename):
+    return send_from_directory("static", filename)
+
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=3000, use_reloader=True)
