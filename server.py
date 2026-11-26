@@ -1,13 +1,19 @@
 from flask import send_from_directory, request, Flask, json, Response
 
-# pelitila populoidaan tähän pelin käynnistymisen jälkeen
-# TODO: pelitila vain muistissa, ehkä olisi hyvä tallentaa levylle
+from game import Game
+
+
+# game state is populated here after the game starts
+# TODO: game state only in memory, maybe it would be good to save it to disk
 game_state = {}
+
+game = Game()
 
 app = Flask(__name__)
 
 @app.route("/new-game/<player>")
 def new_game(player):
+    game.add_player(player)
     player_game_state = {
         "money": 0,
         "water": 0
@@ -18,7 +24,12 @@ def new_game(player):
 
 @app.route("/get-game/<player>")
 def get_game(player):
+    # check if player exists in game state
+    # game_state in this example is a dictionary
+    # player names are used as keys in the dictionary
     if player not in game_state:
+
+        # error responses should be handled by flask
         response = {
             "message": "Player not found",
             "status": 400
@@ -27,6 +38,8 @@ def get_game(player):
         http_response = Response(response=json_response, status=response["status"], mimetype="application/json")
         return http_response
 
+
+    # game state edits etc should be done in the game.py file, not here in server.py
     return game_state[player]
 
 @app.route("/add-water/<player>")

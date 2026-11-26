@@ -1,13 +1,17 @@
+// peli means "game" in Finnish
+
 const gameArea = document.querySelector("#game");
 
 let playerName = "";
 
+// reusable function to call backend endpoints and return JSON response
 const callBackend = async (path) => {
   const response = await fetch(path);
   const json = await response.json();
   return json;
 };
 
+// each api call as their own function
 const createNewGame = async (playerName) => {
   return await callBackend("/new-game/" + playerName);
 };
@@ -24,7 +28,8 @@ const addWater = async (playerName) => {
   return await callBackend("/add-water/" + playerName);
 };
 
-// uuden pelin luonti
+// create new game
+// first find the element, then register an event listener for the submit event
 document
   .querySelector("form#new-game")
   .addEventListener("submit", async (event) => {
